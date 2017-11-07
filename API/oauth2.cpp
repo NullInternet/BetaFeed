@@ -17,7 +17,7 @@ limitations under the License.
 #include <regex>
 #include <string>
 
-OAuth2::OAuth2(char* loginEndpoint, char* successParam){
+OAuth2::OAuth2(std::string loginEndpoint, std::string successParam){
 	this->loginEndpoint = loginEndpoint;
 	this->successParam = successParam;
 }
@@ -29,22 +29,24 @@ void OAuth2::pageLoaded(WebKitWebView  *web_view, WebKitLoadEvent load_event, gp
 	}
 }
 
-void OAuth2::setCallback(void (*func)(char* param, char* value)){
+void OAuth2::setCallback(void (*func)(std::string param, std::string value)){
 	callback = func;
 }
 
-void OAuth2::filterReply(char* reply){
-	std::regex tokensearch(".*" + (std::string)successParam + "=(.*)&.*");
-	std::cmatch match;	
+void OAuth2::filterReply(std::string reply){
+	std::regex tokensearch(".*" + successParam + "=(.*)&.*");
+	std::smatch match;	
 	std::regex_search(reply, match, tokensearch);
 	if(match.size() > 1){
-		(*callback)(successParam, (char*)std::string(match[1]).c_str());
+		(*callback)(successParam, match[1]);
 		app->quit();
 	}
 }
 
 void OAuth2::init(){
   app = Gtk::Application::create();
+
+  OAuth2::accessToken = "";
 
   Gtk::Window window;
   window.set_default_size(800, 600);
@@ -55,11 +57,36 @@ void OAuth2::init(){
   Gtk::Widget* pageContainer = Glib::wrap(GTK_WIDGET(page));
 
   window.add(*pageContainer);
-  webkit_web_view_load_uri(page, loginEndpoint);
+  webkit_web_view_load_uri(page, loginEndpoint.c_str());
   
 	g_signal_connect(page, "load-changed", G_CALLBACK(pageLoaded), this);
 
   window.show_all();
 
   app->run( window ); 
+}
+
+void OAuth2::DisplayData(){
+	std::cout << "\nUSERS DATA:\n\n";
+	for(int i = 0; i < OAuth2::users.size(); i++){
+		std::cout<< "\nUSER: " << OAuth2::users[i].name << "\nID: " << OAuth2::users[i].id 
+				<< "\nLIKES: " << OAuth2::users[i].reactions[0] 
+				<< " LOVE: " << OAuth2::users[i].reactions[1] 
+				<< " WOW: " << OAuth2::users[i].reactions[2] 
+				<< " HAHA: " << OAuth2::users[i].reactions[3] 
+				<< " SAD: " << OAuth2::users[i].reactions[4] 
+				<< " ANGRY: " << OAuth2::users[i].reactions[5] 
+				<< " THANKFUL: " << OAuth2::users[i].reactions[6] << std::endl;
+		for(int ii = 0; ii < OAuth2::users[i].posts.size(); ii++)
+		{
+			std::cout<< "\nPost[" << ii << "] Message: " << users[i].posts[ii].message << " ID: " << users[i].posts[ii].id
+				<< "\nLIKES: " << OAuth2::users[i].posts[ii].reactions[0] 
+				<< " LOVE: " << OAuth2::users[i].posts[ii].reactions[1] 
+				<< " WOW: " << OAuth2::users[i].posts[ii].reactions[2] 
+				<< " HAHA: " << OAuth2::users[i].posts[ii].reactions[3] 
+				<< " SAD: " << OAuth2::users[i].posts[ii].reactions[4] 
+				<< " ANGRY: " << OAuth2::users[i].posts[ii].reactions[5] 
+				<< " THANKFUL: " << OAuth2::users[i].posts[ii].reactions[6]  << std::endl;
+		}
+	}
 }
