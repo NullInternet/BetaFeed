@@ -15,22 +15,31 @@ limitations under the License.
 
 #include <webkit2/webkit2.h>
 #include <gtkmm.h>
+#include <string>
+#include "Data.h"
 
 class OAuth2 {
   private:
-		char* loginEndpoint;
-		char* successParam;
+		std::string loginEndpoint;
+		std::string successParam;
 		WebKitWebView* page;
-		void (*callback)(char*, char*);
+		void (*callback)(std::string, std::string);
 		static void pageLoaded(WebKitWebView*, WebKitLoadEvent, gpointer);
 		Glib::RefPtr<Gtk::Application> app;
-	
+		
 	public:
-		OAuth2(char*, char*);
+		static std::vector<User> users;
+		static std::string accessToken;
+		static std::string currentID;
+		static Post *tmpPost;
+		OAuth2(std::string, std::string);
 		void init();
-		void setCallback(void (*func)(char*, char*));
-		void filterReply(char*);
-		static void temp(char* x, char* y){}
+		void setCallback(void (*func)(std::string, std::string));
+		void filterReply(std::string);
+		void DisplayData();
+		static void temp(std::string x, std::string y){}
 };
+
+
 
 #endif
