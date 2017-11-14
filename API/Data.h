@@ -4,11 +4,17 @@
 
 #include <string>
 
+class Reaction {
+public: 
+	std::string userID;
+	std::string type;
+};
+
 class Post {
 public :
 	std::string id;
 	std::string message;
-	int reactions[7] = { 0,0,0,0,0,0,0 };
+	std::vector<Reaction> reactions;
 	Post(std::string set_id, std::string set_message){
 		id = set_id;
 		message = set_message;
@@ -21,11 +27,10 @@ public :
 };
 
 
-
 class User {
 public:
 	std::string id;
-	int reactions[7] = { 0,0,0,0,0,0,0 };
+	std::vector<Reaction> reactions;
 	std::string name; 
 	std::vector<Post> posts;
 
@@ -40,5 +45,8 @@ public:
 	}
 	//std::unique_ptr<Post> posts(new PostVector);
 };
+
+bool ContainsID(std::vector<User> users,std::string id);
+int getUserIndex(std::vector<User> users,std::string id);
 
 #endif

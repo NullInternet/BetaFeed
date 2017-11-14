@@ -32,6 +32,7 @@ class OAuth2 {
 		static std::string accessToken;
 		static std::string currentID;
 		static Post *tmpPost;
+		static Reaction *tmpReaction;
 		OAuth2(std::string, std::string);
 		void init();
 		void setCallback(void (*func)(std::string, std::string));
