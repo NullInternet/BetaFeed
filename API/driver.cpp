@@ -11,6 +11,7 @@ std::vector<User> OAuth2::users;
 std::string OAuth2::accessToken;
 std::string OAuth2::currentID;
 Post *OAuth2::tmpPost;
+Reaction *OAuth2::tmpReaction;
 
 bool ContainsID(std::vector<User> users,std::string id){
 	if(users.size() == 0)
@@ -101,6 +102,8 @@ void callme(std::string param, std::string value){
 				json::array dataReactions = responseReactions.extract_json().get().at(U("data")).as_array();
 				for(int ii=0; ii<dataReactions.size(); ii++)
 				{
+					OAuth2::tmpReaction = new Reaction();
+
 					std::string id = dataReactions[ii].at(U("id")).as_string();
 					std::string type = dataReactions[ii].at(U("type")).as_string();
 					std::cout << "POST REACTIONS : " << id << std::endl << "type: " << type << std::endl;
@@ -121,9 +124,10 @@ void callme(std::string param, std::string value){
 							reactionIndex = 5;
 					else if (type == "THANKFUL")
 							reactionIndex = 6;
-					
-					OAuth2::tmpPost->reactions[reactionIndex]++;
-					OAuth2::users[getUserIndex(OAuth2::users,id)].reactions[reactionIndex]++;
+					OAuth2::tmpReaction->userID = id;
+					OAuth2::tmpReaction->type = type;
+					OAuth2::tmpPost->reactions.push_back(*OAuth2::tmpReaction);
+					OAuth2::users[getUserIndex(OAuth2::users,id)].reactions.push_back(*OAuth2::tmpReaction);
 				}
 			});
 			

@@ -69,24 +69,29 @@ void OAuth2::init(){
 void OAuth2::DisplayData(){
 	std::cout << "\nUSERS DATA:\n\n";
 	for(int i = 0; i < OAuth2::users.size(); i++){
-		std::cout<< "\nUSER: " << OAuth2::users[i].name << "\nID: " << OAuth2::users[i].id 
-				<< "\nLIKES: " << OAuth2::users[i].reactions[0] 
-				<< " LOVE: " << OAuth2::users[i].reactions[1] 
-				<< " WOW: " << OAuth2::users[i].reactions[2] 
-				<< " HAHA: " << OAuth2::users[i].reactions[3] 
-				<< " SAD: " << OAuth2::users[i].reactions[4] 
-				<< " ANGRY: " << OAuth2::users[i].reactions[5] 
-				<< " THANKFUL: " << OAuth2::users[i].reactions[6] << std::endl;
+		std::cout<< "\nUSER: " << OAuth2::users[i].name << "\nID: " << OAuth2::users[i].id << "\n";
+		if(OAuth2::users[i].reactions.size() <=0)
+		{
+			std::cout << "No Reactions.\n";
+		}
+
+		for(int j = 0; j < OAuth2::users[i].reactions.size(); j++)
+		{
+			std::cout << "Reaction[" << j << "]: " << OAuth2::users[i].reactions[j].type << " from " <<  OAuth2::users[i].reactions[j].userID << std::endl;			
+		}
+
 		for(int ii = 0; ii < OAuth2::users[i].posts.size(); ii++)
 		{
-			std::cout<< "\nPost[" << ii << "] Message: " << users[i].posts[ii].message << " ID: " << users[i].posts[ii].id
-				<< "\nLIKES: " << OAuth2::users[i].posts[ii].reactions[0] 
-				<< " LOVE: " << OAuth2::users[i].posts[ii].reactions[1] 
-				<< " WOW: " << OAuth2::users[i].posts[ii].reactions[2] 
-				<< " HAHA: " << OAuth2::users[i].posts[ii].reactions[3] 
-				<< " SAD: " << OAuth2::users[i].posts[ii].reactions[4] 
-				<< " ANGRY: " << OAuth2::users[i].posts[ii].reactions[5] 
-				<< " THANKFUL: " << OAuth2::users[i].posts[ii].reactions[6]  << std::endl;
+			std::cout<< "\nPost[" << ii << "] Message: " << users[i].posts[ii].message << " ID: " << users[i].posts[ii].id << "\n";
+			if(OAuth2::users[i].posts[ii].reactions.size() <=0)
+			{
+				std::cout << "No Reactions.\n";
+			}
+
+			for(int j = 0; j < OAuth2::users[i].posts[ii].reactions.size(); j++)
+			{
+				std::cout << "Reaction[" << j << "]: " << OAuth2::users[i].posts[ii].reactions[j].type << " from " <<  OAuth2::users[i].posts[ii].reactions[j].userID << std::endl;			
+			}	
 		}
 	}
 }
