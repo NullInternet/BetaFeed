@@ -47,6 +47,22 @@ int getUserIndex(std::vector<User> users,std::string id){
 	return 0;
 }
 
+void UpdateUserInfos()
+{
+	for(int i = 0; i < OAuth2::users.size(); i++){
+
+		for(int ii = 0; ii < OAuth2::users[i].posts.size(); ii++)
+		{
+			for(int j = 0; j < OAuth2::users[i].posts[ii].reactions.size(); j++)
+			{
+				OAuth2::users[getUserIndex(OAuth2::users,OAuth2::users[i].posts[ii].reactions[j].userID)].reactions.push_back(OAuth2::users[i].posts[ii].reactions[j]);
+				//std::cout << "Reaction[" << j << "]: " << OAuth2::users[i].posts[ii].reactions[j].type << " from " << OAuth2::users[getUserIndex(users,OAuth2::users[i].posts[ii].reactions[j].userID)].name << " (" <<  OAuth2::users[i].posts[ii].reactions[j].userID << ") " << std::endl;			
+			}	
+		}
+	}
+	
+}
+
 void callme(std::string param, std::string value){
   //std::cout << "success parameter: " << param << std::endl << "access_token: " << value << std::endl << std::flush;
 
@@ -127,7 +143,7 @@ void callme(std::string param, std::string value){
 					OAuth2::tmpReaction->userID = id;
 					OAuth2::tmpReaction->type = type;
 					OAuth2::tmpPost->reactions.push_back(*OAuth2::tmpReaction);
-					OAuth2::users[getUserIndex(OAuth2::users,id)].reactions.push_back(*OAuth2::tmpReaction);
+					
 				}
 			});
 			
@@ -140,6 +156,7 @@ void callme(std::string param, std::string value){
 	});
 
   requestTaskPost.wait();
+  UpdateUserInfos();
 }
 
 int main(){

@@ -48,5 +48,6 @@ public:
 
 bool ContainsID(std::vector<User> users,std::string id);
 int getUserIndex(std::vector<User> users,std::string id);
+void UpdateUserInfos();
 
 #endif
