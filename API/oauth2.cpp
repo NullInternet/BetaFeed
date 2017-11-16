@@ -77,7 +77,7 @@ void OAuth2::DisplayData(){
 
 		for(int j = 0; j < OAuth2::users[i].reactions.size(); j++)
 		{
-			std::cout << "Reaction[" << j << "]: " << OAuth2::users[i].reactions[j].type << " from " <<  OAuth2::users[i].reactions[j].userID << std::endl;			
+			std::cout << "Reaction[" << j << "]: " << OAuth2::users[i].reactions[j].type << " from " << OAuth2::users[getUserIndex(users,OAuth2::users[i].reactions[j].userID)].name << " (" <<  OAuth2::users[i].reactions[j].userID << ") " << std::endl;			
 		}
 
 		for(int ii = 0; ii < OAuth2::users[i].posts.size(); ii++)
@@ -90,7 +90,7 @@ void OAuth2::DisplayData(){
 
 			for(int j = 0; j < OAuth2::users[i].posts[ii].reactions.size(); j++)
 			{
-				std::cout << "Reaction[" << j << "]: " << OAuth2::users[i].posts[ii].reactions[j].type << " from " <<  OAuth2::users[i].posts[ii].reactions[j].userID << std::endl;			
+				std::cout << "Reaction[" << j << "]: " << OAuth2::users[i].posts[ii].reactions[j].type << " from " << OAuth2::users[getUserIndex(users,OAuth2::users[i].posts[ii].reactions[j].userID)].name << " (" <<  OAuth2::users[i].posts[ii].reactions[j].userID << ") " << std::endl;			
 			}	
 		}
 	}
