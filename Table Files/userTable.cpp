@@ -5,12 +5,12 @@
 * Project: BetaFeed
 *
 * userTable.cpp
-* This file defines functions for the userTable class.
+* This file defines functions for the UserTable class.
 */
 #include "userTable.h"
 
 // Create table for user data upon creating class instance
-userTable::userTable() {
+UserTable::UserTable() {
 	sqlite3_open("repData.db", &db);
 	sql = "CREATE TABLE User ("
 		"USER_ID INT PRIMARY KEY NOT NULL,"
@@ -20,11 +20,11 @@ userTable::userTable() {
 }
 
 // Close database upon deleting class instance
-userTable::~userTable() {
+UserTable::~UserTable() {
 	sqlite3_close(db);
 }
 
 // Save extracted data to database
-void userTable::saveToDB() {
+void UserTable::saveToDB() {
 	
 }

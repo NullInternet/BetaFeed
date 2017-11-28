@@ -4,7 +4,7 @@
 * 11/28/2017
 * Project: BetaFeed
 *
-* CommentTable.h
+* commentTable.h
 * This file defines a class that stores comment data in
 * a database.
 */
@@ -14,7 +14,7 @@ class CommentTable {
 	sqlite3 *db;
 	char *sql;
 public:
-	commentTable();
-	~commentTable();
+	CommentTable();
+	~CommentTable();
 	void saveToDB();
 };

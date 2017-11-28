@@ -4,7 +4,7 @@
 * 11/28/2017
 * Project: BetaFeed
 *
-* SharesTable.h
+* sharesTable.h
 * This file defines a class that stores shares data in
 * a database.
 */
@@ -14,7 +14,7 @@ class SharesTable {
 	sqlite3 *db;
 	char *sql;
 public:
-	sharesTable();
-	~sharesTable();
+	SharesTable();
+	~SharesTable();
 	void saveToDB();
 };
