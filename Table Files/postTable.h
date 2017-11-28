@@ -4,7 +4,7 @@
 * 11/28/2017
 * Project: BetaFeed
 *
-* PostTable.h
+* postTable.h
 * This file defines a class that stores post data in
 * a database.
 */
@@ -14,7 +14,7 @@ class PostTable {
 	sqlite3 *db;
 	char *sql;
 public:
-	postTable();
-	~postTable();
+	PostTable();
+	~PostTable();
 	void saveToDB();
 };
