@@ -4,17 +4,17 @@
 * 11/28/2017
 * Project: BetaFeed
 *
-* commentTable.h
-* This file defines a class that stores comment data in
+* reactionTable.h
+* This file defines a class that stores reaction data in
 * a database.
 */
 #include <sqlite3.h>
 
-class CommentTable {
+class ReactionTable {
 	sqlite3 *db;
 	char *sql;
 public:
-	CommentTable();
-	~CommentTable();
+	ReactionTable();
+	~ReactionTable();
 	void saveToDB();
 };
