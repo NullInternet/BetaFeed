@@ -5,12 +5,12 @@
 * Project: BetaFeed
 *
 * commentTable.cpp
-* This file defines functions for the commentTable class.
+* This file defines functions for the CommentTable class.
 */
 #include "commentTable.h"
 
 // Create table for comment data upon creating class instance
-commentTable::commentTable() {
+CommentTable::CommentTable() {
 	sqlite3_open("repData.db", &db);
 	sql = "CREATE TABLE Comment ("
 		"COMMENT_ID INT PRIMARY KEY NOT NULL,"
@@ -22,11 +22,11 @@ commentTable::commentTable() {
 }
 
 // Close database upon deleting class instance
-commentTable::~commentTable() {
+CommentTable::~CommentTable() {
 	sqlite3_close(db);
 }
 
 // Save extracted data to database
-void commentTable::saveToDB() {
+void CommentTable::saveToDB() {
 	
 }
