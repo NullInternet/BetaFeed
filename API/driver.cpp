@@ -2,6 +2,7 @@
 #include <cpprest/uri.h>  
 #include "oauth2.h"
 #include <iostream>
+#include <regex> 
 
 using namespace web; 
 using namespace web::http;
@@ -47,6 +48,12 @@ int getUserIndex(std::vector<User> users,std::string id){
 	return 0;
 }
 
+/* Remove unicode sequence from json string */
+std::string clean_json(std::string json){
+   std::regex pattern("\\\\u[a-fA-F0-9]{4}");
+   return std::regex_replace(json, pattern, " ");
+}
+
 void UpdateUserInfos()
 {
 	for(int i = 0; i < OAuth2::users.size(); i++){
@@ -73,7 +80,7 @@ void callme(std::string param, std::string value){
 	std::cout << builder.to_string() << std::endl;
 
 	pplx::task<void> requestTaskPost = clientPost.request(methods::GET, builder.to_string()).then([] (http_response responsePost){
-		json::array dataPost = responsePost.extract_json().get().at(U("data")).as_array();
+		json::array dataPost = json::value::parse(U(clean_json(responsePost.extract_string().get()))).at(U("data")).as_array();
 		for(int i=0; i<dataPost.size(); i++){	
 
 			std::string id = dataPost[i].at(U("id")).as_string();
@@ -82,7 +89,7 @@ void callme(std::string param, std::string value){
 				message = dataPost[i].at(U("message")).as_string();
 			else
 				message = dataPost[i].at(U("story")).as_string();
-			std::cout << "\nPost ID: " << id << std::endl << "Post message: " << message << std::endl;
+			//std::cout << "\nPost ID: " << id << std::endl << "Post message: " << message << std::endl;
 			OAuth2::tmpPost = new Post(id,message);
 			uri_builder builderUser(U("/"));
 			builderUser.append(U(OAuth2::tmpPost->id));
@@ -97,7 +104,7 @@ void callme(std::string param, std::string value){
 				// {
 					std::string id = dataUser.at(U("id")).as_string();
 					std::string name = dataUser.at(U("name")).as_string();
-					std::cout << "FROM User ID: " << id << std::endl << "username: " << name << std::endl;
+					//std::cout << "FROM User ID: " << id << std::endl << "username: " << name << std::endl;
 					User *user  = new User(id,name);
 					if(!ContainsID(OAuth2::users,id))
 					{
@@ -122,7 +129,7 @@ void callme(std::string param, std::string value){
 
 					std::string id = dataReactions[ii].at(U("id")).as_string();
 					std::string type = dataReactions[ii].at(U("type")).as_string();
-					std::cout << "POST REACTIONS : " << id << std::endl << "type: " << type << std::endl;
+					//std::cout << "POST REACTIONS : " << id << std::endl << "type: " << type << std::endl;
 
 					int reactionIndex = 0;
 					
@@ -143,13 +150,45 @@ void callme(std::string param, std::string value){
 					OAuth2::tmpReaction->userID = id;
 					OAuth2::tmpReaction->type = type;
 					OAuth2::tmpPost->reactions.push_back(*OAuth2::tmpReaction);
-					
 				}
 			});
 			
 			requestTaskReactions.wait();
+			
+			uri_builder builderComments(U("/"));
+			builderComments.append(U(OAuth2::tmpPost->id));
+			builderComments.append(U("/comments"));
+			builderComments.append_query(U("access_token"), OAuth2::accessToken);
+			http_client clientComments(U("https://graph.facebook.com/v2.10"));
+			pplx::task<void> requestTaskComments = clientComments.request(methods::GET, builderComments.to_string()).then([] (http_response responseComments){
+				//std::cout << "Getting Comments for " << OAuth2::users[getUserIndex(OAuth2::users,OAuth2::currentID)].name << "\n";
+				json::array dataComments = json::value::parse(U(clean_json(responseComments.extract_string().get()))).at(U("data")).as_array();
+				for(int ii=0; ii<dataComments.size(); ii++)
+				{
+					if(dataComments[ii].has_field(U("message")))
+						OAuth2::tmpPost->comments.push_back(dataComments[ii].at(U("message")).as_string());
+					OAuth2::users[getUserIndex(OAuth2::users,OAuth2::currentID)].commentCount++;
+				}
+			});
+			
+			requestTaskComments.wait();
 
-			//post->reactions = OAuth2::users[getUserIndex(OAuth2::users,OAuth2::currentID)].reactions;
+			uri_builder builderShares(U("/"));
+			builderShares.append(U(OAuth2::tmpPost->id));
+			builderShares.append(U("/sharedposts"));
+			builderShares.append_query(U("access_token"), OAuth2::accessToken);
+
+			http_client clientShares(U("https://graph.facebook.com/v2.10"));
+			pplx::task<void> requestTaskShares = clientShares.request(methods::GET, builderShares.to_string()).then([] (http_response responseShares){
+				json::array dataShares = responseShares.extract_json().get().at(U("data")).as_array();
+				for(int ii=0; ii<dataShares.size(); ii++)
+				{
+					OAuth2::users[getUserIndex(OAuth2::users,dataShares[ii].at(U("id")).as_string())].shareCount++
+;				}
+			});
+			
+			requestTaskShares.wait();
+			
 			OAuth2::users[getUserIndex(OAuth2::users,OAuth2::currentID)].posts.push_back(*OAuth2::tmpPost);
 
 		}
