@@ -11,7 +11,7 @@
 
 // Create table for likes data upon creating class instance
 likesTable::likesTable() {
-	sqlite3_open("likesData.db", &db);
+	sqlite3_open("repData.db", &db);
 	sql = "CREATE TABLE Likes ("
 		"LIKE_ID INT PRIMARY KEY NOT NULL,"
 		"LUSER_ID INT NOT NULL,"

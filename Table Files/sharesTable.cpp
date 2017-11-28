@@ -11,7 +11,7 @@
 
 // Create table for shares data upon creating class instance
 sharesTable::sharesTable() {
-	sqlite3_open("sharesData.db", &db);
+	sqlite3_open("repData.db", &db);
 	sql = "CREATE TABLE Shares ("
 		"SHARE_ID INT PRIMARY KEY NOT NULL,"
 		"SUSER_ID INT NOT NULL,"
