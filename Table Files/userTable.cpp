@@ -11,7 +11,7 @@
 
 // Create table for user data upon creating class instance
 userTable::userTable() {
-	sqlite3_open("userData.db", &db);
+	sqlite3_open("repData.db", &db);
 	sql = "CREATE TABLE User ("
 		"USER_ID INT PRIMARY KEY NOT NULL,"
 		"USERNAME TEXT NOT NULL)"

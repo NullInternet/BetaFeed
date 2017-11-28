@@ -11,7 +11,7 @@
 
 // Create table for post data upon creating class instance
 postTable::postTable() {
-	sqlite3_open("postData.db", &db);
+	sqlite3_open("repData.db", &db);
 	sql = "CREATE TABLE Post ("
 		"POST_ID INT PRIMARY KEY NOT NULL,"
 		"PUSER_ID INT NOT NULL,"
