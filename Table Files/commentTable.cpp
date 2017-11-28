@@ -11,7 +11,7 @@
 
 // Create table for comment data upon creating class instance
 commentTable::commentTable() {
-	sqlite3_open("commentData.db", &db);
+	sqlite3_open("repData.db", &db);
 	sql = "CREATE TABLE Comment ("
 		"COMMENT_ID INT PRIMARY KEY NOT NULL,"
 		"CUSER_ID INT NOT NULL,"

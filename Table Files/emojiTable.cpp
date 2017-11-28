@@ -11,7 +11,7 @@
 
 // Create table for emoji data upon creating class instance
 emojiTable::emojiTable() {
-	sqlite3_open("emojiData.db", &db);
+	sqlite3_open("repData.db", &db);
 	sql = "CREATE TABLE Emoji ("
 		"EMOJI_ID INT PRIMARY KEY NOT NULL,"
 		"EUSER_ID INT NOT NULL,"
