@@ -70,6 +70,8 @@ void OAuth2::DisplayData(){
 	std::cout << "\nUSERS DATA:\n\n";
 	for(int i = 0; i < OAuth2::users.size(); i++){
 		std::cout<< "\nUSER: " << OAuth2::users[i].name << "\nID: " << OAuth2::users[i].id << "\n";
+		std::cout<<"Comment Amount:" << OAuth2::users[i].commentCount << "\n";
+		std::cout<<"Share Amount: " << OAuth2::users[i].shareCount << "\n";
 		if(OAuth2::users[i].reactions.size() <=0)
 		{
 			std::cout << "No Reactions.\n";
@@ -92,6 +94,15 @@ void OAuth2::DisplayData(){
 			{
 				std::cout << "Reaction[" << j << "]: " << OAuth2::users[i].posts[ii].reactions[j].type << " from " << OAuth2::users[getUserIndex(users,OAuth2::users[i].posts[ii].reactions[j].userID)].name << " (" <<  OAuth2::users[i].posts[ii].reactions[j].userID << ") " << std::endl;			
 			}	
+
+			if(OAuth2::users[i].posts[ii].comments.size() <=0)
+			{
+				std::cout << "No Comments.\n";
+			}
+			for(int j = 0; j < OAuth2::users[i].posts[ii].comments.size(); j++)
+			{
+				std::cout << "Comment[" << j << "]: " << OAuth2::users[i].posts[ii].comments[j] << std::endl;	
+			}
 		}
 	}
 }
