@@ -5,12 +5,12 @@
 * Project: BetaFeed
 *
 * sharesTable.cpp
-* This file defines functions for the sharesTable class.
+* This file defines functions for the SharesTable class.
 */
 #include "sharesTable.h"
 
 // Create table for shares data upon creating class instance
-sharesTable::sharesTable() {
+SharesTable::SharesTable() {
 	sqlite3_open("repData.db", &db);
 	sql = "CREATE TABLE Shares ("
 		"SHARE_ID INT PRIMARY KEY NOT NULL,"
@@ -22,11 +22,11 @@ sharesTable::sharesTable() {
 }
 
 // Close database upon deleting class instance
-sharesTable::~sharesTable() {
+SharesTable::~SharesTable() {
 	sqlite3_close(db);
 }
 
 // Save extracted data to database
-void sharesTable::saveToDB() {
+void SharesTable::saveToDB() {
 	
 }

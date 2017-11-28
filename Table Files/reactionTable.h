@@ -4,17 +4,17 @@
 * 11/28/2017
 * Project: BetaFeed
 *
-* LikesTable.h
-* This file defines a class that stores likes data in
+* reactionTable.h
+* This file defines a class that stores reaction data in
 * a database.
 */
 #include <sqlite3.h>
 
-class LikesTable {
+class ReactionTable {
 	sqlite3 *db;
 	char *sql;
 public:
-	likesTable();
-	~likesTable();
+	ReactionTable();
+	~ReactionTable();
 	void saveToDB();
 };
