@@ -13,19 +13,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#include "fbpastpost.h"
+#include "fbbetafeed.h"
 #include <iostream>
 
-//Edit this file, replacing quoted .glade and window with those found in BetaFeed
 int main(){
-	GladeAppManager gapManager("BetaFeed_GUI.glade");
-	LoginController lc("start_window");
-	gapManager.addViewController(&lc, true);
-	PostController pc("posts_window");
-	gapManager.addViewController(&pc);
-	//New reaction controller for reactions to individual posts
-	ReactionController rc("reaction_window");
-	gapManager.addViewController(&rc);
+	// Create the Glade application manager - glade file changed
+	GladeAppManager gapManager("fbbetafeed.glade"); 
+
+	// Create the login and post controllers (see code in fbpastpost.cpp) and pass the Glade application manager, 
+	// name of the associated window in Glade, and if it is the top level window. The top level window is
+	// the first window opened. The application exits whenever it is closed. There should only be 1 top level window.
+	// In cases when multiple top level windows are defined, the last one is set as the top level window.
+	LoginController lc(&gapManager, "start_window", true); 
+	PostController pc(&gapManager, "posts_window", false);
+
+	// Start the GUI
 	gapManager.start();
+
+	// Start will run while the GUI is displayed. Statements after the call to start will only run after the
+	// GUI closes
+
 }
 
