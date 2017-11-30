@@ -26,17 +26,20 @@ Glib::RefPtr<Gtk::Builder> GladeAppManager::getBuilder(){
 	return builder;
 }
 
+Glib::RefPtr<Gtk::Application> GladeAppManager::getGtkApplication(){
+	return app;
+}
+
 void GladeAppManager::addViewController(ViewController* controller){
 	addViewController(controller, false);
 }
 
 void GladeAppManager::addViewController(ViewController* controller, bool isTopLevel){
 	if(isTopLevel){
-		topLevelWindow = controller->getName();
+		topLevelWindow = controller->getWindowName();
 		currWindow = topLevelWindow;
 	}
-	controller->setGladeAppManager(this);
-	views[controller->getName()] = controller;
+	views[controller->getWindowName()] = controller;
 }
 
 void GladeAppManager::showView(std::string windowName){
@@ -67,22 +70,11 @@ void GladeAppManager::exit(){
 		app->release();
 }
 
-ViewController::ViewController(std::string windowName){
+ViewController::ViewController(GladeAppManager* gapManager, std::string windowName, bool isTopLevel=false){
 	this->windowName = windowName;
-}
-
-std::string ViewController::getName(){
-	return windowName;
-}
-
-Gtk::Window* ViewController::getWindow(){
-	return window;
-}
-
-void ViewController::setGladeAppManager(GladeAppManager* gapManager){
 	this->gapManager = gapManager;
+	gapManager->addViewController(this, isTopLevel);
 	builder = gapManager->getBuilder();
 	builder->get_widget(windowName, this->window);
 	this->window->signal_delete_event().connect( sigc::mem_fun(this, &ViewController::clickClose) );
-	init();
 }

@@ -21,6 +21,7 @@ limitations under the License.
 #include <gdkmm/event.h>
 #include <map>
 
+/* Exceptions */
 class TopLevelWindowException: public std::exception
 {
   virtual const char* what() const throw()
@@ -29,20 +30,36 @@ class TopLevelWindowException: public std::exception
   }
 };
 
+class BuilderRetrievalException : public std::exception {
+	virtual const char* what() const throw(){
+		return "Builder has not been assigned by the GladeAppManager via addViewController";
+	}
+};
+
+class GladeAppManagerRetrievalException : public std::exception {
+	virtual const char* what() const throw(){
+		return "GladeAppManager has not yet been assigned via addViewController";
+	}
+};
+
+class WindowRetrievalException : public std::exception {
+	virtual const char* what() const throw(){
+		return "Window has not yet been assigned via addViewController";
+	}
+};
+
 class GladeAppManager;
 
 class ViewController {
 	protected:
 		Glib::RefPtr<Gtk::Builder> builder;
 		std::string windowName;
-		Gtk::Window * window;
+		Gtk::Window* window;
 		GladeAppManager* gapManager;
 	public:
-		ViewController(std::string);
-		std::string getName();
-		Gtk::Window* getWindow();
-		void setGladeAppManager(GladeAppManager*);
-		virtual void init() = 0;
+		ViewController(GladeAppManager*, std::string, bool);
+		std::string getWindowName(){ return windowName; };
+		Gtk::Window* getWindow(){ return window; };
 		virtual bool clickClose(GdkEventAny*) = 0;
 };
 
@@ -57,6 +74,7 @@ class GladeAppManager {
 	public:
 		GladeAppManager(std::string);
 		Glib::RefPtr<Gtk::Builder> getBuilder();
+		Glib::RefPtr<Gtk::Application> getGtkApplication();
 		void addViewController(ViewController*);
 		void addViewController(ViewController*, bool);
 		void showView(std::string);
