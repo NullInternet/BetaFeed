@@ -14,10 +14,6 @@ std::string OAuth2::currentID;
 Post *OAuth2::tmpPost;
 Reaction *OAuth2::tmpReaction;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 583a9fcc32abdc86f82559f09a9d85cb9b7b687e
 bool ContainsID(std::vector<User> users,std::string id){
 	if(users.size() == 0)
 	{
