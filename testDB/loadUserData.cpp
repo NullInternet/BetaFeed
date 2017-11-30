@@ -14,7 +14,11 @@
 #include <sqlite3.h>
 using namespace std;
 
+<<<<<<< HEAD
 int main_tmp() {
+=======
+int main() {
+>>>>>>> 583a9fcc32abdc86f82559f09a9d85cb9b7b687e
 	ifstream inFile;
 	string inFileName;
 	
