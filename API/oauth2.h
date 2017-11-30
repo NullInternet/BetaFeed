@@ -37,7 +37,7 @@ class OAuth2 {
 		void init();
 		void setCallback(void (*func)(std::string, std::string));
 		void filterReply(std::string);
-		void DisplayData();
+		static void DisplayData();
 		static void temp(std::string x, std::string y){}
 };
 

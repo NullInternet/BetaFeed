@@ -14,6 +14,7 @@ std::string OAuth2::currentID;
 Post *OAuth2::tmpPost;
 Reaction *OAuth2::tmpReaction;
 
+
 bool ContainsID(std::vector<User> users,std::string id){
 	if(users.size() == 0)
 	{
